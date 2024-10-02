@@ -2,4 +2,47 @@
 title: "p8105_hw2_xw2961"
 output: github_document
 ---
-test
+
+# Load package
+```{r}
+library(tidyverse)
+library(readxl)
+library(tidyr)
+library(dplyr)
+```
+
+# Problem 1
+```{r}
+NYC_subway = read.csv("~/Desktop/Columbia Year2/Data Science/HW/HW2/p8105_hw2/NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
+```
+
+# Problem 2
+* import and clean the dataset (Mr. Trash Wheel)
+```{r}
+Mr_trash_wheel = read_excel("~/Desktop/Columbia Year2/Data Science/HW/HW2/p8105_hw2/202409 Trash Wheel Collection Data.xlsx",
+range="A2:N655")%>%
+  janitor:: clean_names()%>% 
+  mutate(sports_balls = round(as.numeric(sports_balls),0))%>% 
+  filter(!is.na(dumpster))
+```
+
+*import and clean the dataset (Professor Trash Wheel)
+```{r}
+Prof_trash_wheel = read_excel("~/Desktop/Columbia Year2/Data Science/HW/HW2/p8105_hw2/202409 Trash Wheel Collection Data.xlsx", 
+sheet = "Professor Trash Wheel", range="A2:M123") %>%
+  janitor::clean_names() %>%
+  filter(!is.na(dumpster)) %>%
+  filter(!is.na(date))
+```
+
+*import and clean the dataset (Professor Gwynnda Trash Wheel)
+```{r}
+gwynnda_trash_wheel = read_excel("~/Desktop/Columbia Year2/Data Science/HW/HW2/p8105_hw2/202409 Trash Wheel Collection Data.xlsx",
+sheet = "Gwynnda Trash Wheel", range="A2:L266")%>%
+  janitor::clean_names() %>%
+    filter(!is.na(dumpster)) %>%
+  filter(!is.na(date))
+```
+
+
+
