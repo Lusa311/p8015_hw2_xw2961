@@ -120,9 +120,9 @@ First we import the datasets using `read.csv` and utilize a consistent column na
 
 ```{r}
 star_bakers =
-  final_dataset |>
-  filter(series %in% 5:10, !is.na(result) & result %in% c("STAR BAKER", "WINNER")) |>
-  select(series, episode, baker, result) |>
+  final_dataset %>% 
+  filter(series %in% 5:10, !is.na(result) & result %in% c("STAR BAKER", "WINNER")) %>% 
+  select(series, episode, baker, result) %>% 
   arrange(series, episode)
 kable(star_bakers)
 ```
@@ -136,14 +136,26 @@ Unexpected overall winner: In season 10, the winner 'David' was unexpected as he
 The first 10 rows:
 ```{r}
 viewers_data = 
-  read_csv("gbb_datasets/viewers.csv") |>
-  janitor::clean_names() |>
+  read_csv("gbb_datasets/viewers.csv") %>% 
+  janitor::clean_names() %>% 
   pivot_longer(
     cols = starts_with("series_"), 
     names_to = "season", 
-    values_to = "viewership") |>
-  mutate(season = readr::parse_number(season)) |>
-  relocate(season) |>
+    values_to = "viewership") %>% 
+  mutate(season = readr::parse_number(season)) %>% 
+  relocate(season) %>% 
   arrange(season, episode)
 
 print(head(viewers_data, 10))
+```
+
+Calculating the Mean Viewerships
+```{r}
+viewers_data %>% 
+  filter(season == 1) %>% 
+  pull(viewership) %>% 
+  mean(na.rm = TRUE)
+```
+
+Season 1 mean viewership: `r viewers_data |> filter(season == 1) |> pull(viewership) |> mean(na.rm = TRUE)`
+Season 5 mean viewership: `r viewers_data |> filter(season == 5) |> pull(viewership) |> mean(na.rm = TRUE)`
